@@ -27,17 +27,22 @@ public class NisaBot extends Robot {
 
 	boolean peek; // Don't turn if there's a robot there
 	double moveAmount; // How much to move
+	
+	public void changeColor(Color color) {
+		// Set colors
+		setBodyColor(color);
+		setGunColor(color);
+		setRadarColor(color);
+		setBulletColor(color);
+		setScanColor(color);
+	}
 
 	/**
 	 * run: Move around the walls
 	 */
 	public void run() {
-		// Set colors
-		setBodyColor(Color.black);
-		setGunColor(Color.black);
-		setRadarColor(Color.orange);
-		setBulletColor(Color.cyan);
-		setScanColor(Color.cyan);
+		
+		changeColor(Color.blue);
 
 		// Initialize moveAmount to the maximum possible for this battlefield.
 		moveAmount = Math.max(getBattleFieldWidth(), getBattleFieldHeight());
@@ -70,6 +75,8 @@ public class NisaBot extends Robot {
 	 * onHitRobot:  Move away a bit.
 	 */
 	public void onHitRobot(HitRobotEvent e) {
+		changeColor(Color.ORANGE);
+		
 		// If he's in front of us, set back up a bit.
 		if (e.getBearing() > -90 && e.getBearing() < 90) {
 			back(100);
@@ -83,6 +90,8 @@ public class NisaBot extends Robot {
 	 * onScannedRobot:  Fire!
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
+		changeColor(Color.RED);
+		
 		fire(2);
 		// Note that scan is called automatically when the robot is moving.
 		// By calling it manually here, we make sure we generate another scan event if there's a robot on the next
@@ -90,5 +99,7 @@ public class NisaBot extends Robot {
 		if (peek) {
 			scan();
 		}
+		
+		changeColor(Color.BLUE);
 	}
 }
